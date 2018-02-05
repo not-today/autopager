@@ -146,3 +146,9 @@ HTML file using "Save As.." browser menu option it is better to use
 regardless of page encoding defined in HTTP headers or ``<meta>`` tags.
 
 .. _Splash: https://github.com/scrapinghub/splash
+
+----
+
+.. image:: https://hyperiongray.s3.amazonaws.com/define-hg.svg
+	:target: https://hyperiongray.com/?pk_campaign=github&pk_kwd=autopager
+	:alt: define hyperiongray
