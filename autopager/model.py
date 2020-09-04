@@ -23,6 +23,8 @@ XXX: also tried, but not present in the final model:
 from __future__ import absolute_import
 
 import re
+from itertools import islice
+
 import sklearn_crfsuite
 from six.moves.urllib.parse import urlsplit, parse_qsl
 
@@ -32,7 +34,11 @@ from autopager.htmlutils import (
     get_text_around_selector_list,
     get_selector_root,
 )
+from autopager.limits import Limits
 from autopager.utils import normalize, tokenize, ngrams_wb, replace_digits
+
+
+AUTOPAGER_LIMITS = Limits()
 
 
 def _elem_attr(elem, attr):
@@ -56,9 +62,9 @@ def link_to_features(link):
 
     query_parsed = parse_qsl(p.query)
     query_param_names = [k.lower() for k, v in query_parsed]
-    query_param_names_ngrams = ngrams_wb(
+    query_param_names_ngrams = list(ngrams_wb(
         " ".join([normalize(name) for name in query_param_names]), 3, 5, True
-    )
+    ))
 
     elem = get_selector_root(link)
     elem_target = _elem_attr(elem, 'target')
@@ -69,7 +75,7 @@ def link_to_features(link):
     # arrow icon classes inside <a> links.
     self_and_children_classes = ' '.join(link.xpath(".//@class").extract())
     parent_classes = ' '.join(link.xpath('../@class').extract())
-    css_classes = normalize(self_and_children_classes + ' ' + parent_classes)
+    css_classes = normalize(parent_classes + ' ' + self_and_children_classes)
 
     return {
         'bias': 3.0,
@@ -79,9 +85,11 @@ def link_to_features(link):
         'elem-rel': elem_rel,
         'num-tokens%s' % _num_tokens_feature(text): 1.0,
 
-        'text': ngrams_wb(replace_digits(text), 2, 5),
+        'text': list(islice(ngrams_wb(replace_digits(text), 2, 5),
+                            0, AUTOPAGER_LIMITS.max_text_features)),
         'text-exact': replace_digits(text.strip()[:20].strip()),
-        'class': ngrams_wb(css_classes, 4, 5),
+        'class': list(islice(ngrams_wb(css_classes, 4, 5),
+                             0, AUTOPAGER_LIMITS.max_css_features)),
         'query': query_param_names_ngrams,
 
         'path-has-page': 'page' in p.path.lower(),
@@ -134,8 +142,8 @@ def page_to_features(xseq):
     # (as if they are a single feature, not many features)
     k = 0.2
     for feat, (before, after) in zip(features, around):
-        feat['text-before'] = {n: k for n in ngrams_wb(normalize(before), 5, 5)}
-        feat['text-after'] = {n: k for n in ngrams_wb(normalize(after), 5, 5)}
+        feat['text-before'] = {n: k for n in list(ngrams_wb(normalize(before), 5, 5))}
+        feat['text-after'] = {n: k for n in list(ngrams_wb(normalize(after), 5, 5))}
     return features
 
 

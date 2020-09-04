@@ -18,7 +18,7 @@ def test_normalize_whitespaces(text, result):
     [["I", "am", "hungry"], 1, 2, [["I"], ["am"], ["hungry"], ["I", "am"], ["am", "hungry"]]],
 ])
 def test_ngrams(seq, min_n, max_n, result):
-    assert ngrams(seq, min_n, max_n) == result
+    assert list(ngrams(seq, min_n, max_n)) == result
 
 
 def test_normalize():
