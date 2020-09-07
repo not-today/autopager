@@ -30,14 +30,12 @@ def normalize_whitespaces(text):
 
 def ngrams(seq, min_n, max_n):
     """
-    Return min_n to max_n n-grams of elements from a given sequence.
+    Generate min_n to max_n n-grams of elements from a given sequence.
     """
     text_len = len(seq)
-    res = []
     for n in range(min_n, min(max_n + 1, text_len + 1)):
         for i in range(text_len - n + 1):
             yield seq[i: i + n]
-    return res
 
 
 def normalize(text):
@@ -54,7 +52,7 @@ def ngrams_stripped(text, min_n, max_n):
 
 def ngrams_wb(text, min_n, max_n, include_tokens=True):
     """
-    Return character ngrams; they don't span across whitespaces.
+    Generate character ngrams; they don't span across whitespaces.
     If ``include_tokens`` is True, tokens themselves are included
     if their lenght is less than ``min_n``.
 

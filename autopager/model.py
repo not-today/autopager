@@ -54,6 +54,17 @@ def _num_tokens_feature(text):
     return num_tokens
 
 
+def _as_list(generator, limit=None):
+    """
+    >>> _as_list(ngrams_wb("text", 2, 2), 0)
+    []
+    >>> _as_list(ngrams_wb("text", 2, 2), 2)
+    ['te', 'ex']
+    >>> _as_list(ngrams_wb("text", 2, 2))
+    ['te', 'ex', 'xt']
+    """
+    return list(generator if limit is None else islice(generator, 0, limit))
+
 def link_to_features(link):
     text = normalize(get_link_text(link))
 
@@ -62,7 +73,7 @@ def link_to_features(link):
 
     query_parsed = parse_qsl(p.query)
     query_param_names = [k.lower() for k, v in query_parsed]
-    query_param_names_ngrams = list(ngrams_wb(
+    query_param_names_ngrams = _as_list(ngrams_wb(
         " ".join([normalize(name) for name in query_param_names]), 3, 5, True
     ))
 
@@ -85,11 +96,11 @@ def link_to_features(link):
         'elem-rel': elem_rel,
         'num-tokens%s' % _num_tokens_feature(text): 1.0,
 
-        'text': list(islice(ngrams_wb(replace_digits(text), 2, 5),
-                            0, AUTOPAGER_LIMITS.max_text_features)),
+        'text': _as_list(ngrams_wb(replace_digits(text), 2, 5),
+                         AUTOPAGER_LIMITS.max_text_features),
         'text-exact': replace_digits(text.strip()[:20].strip()),
-        'class': list(islice(ngrams_wb(css_classes, 4, 5),
-                             0, AUTOPAGER_LIMITS.max_css_features)),
+        'class': _as_list(ngrams_wb(css_classes, 4, 5),
+                          AUTOPAGER_LIMITS.max_css_features),
         'query': query_param_names_ngrams,
 
         'path-has-page': 'page' in p.path.lower(),
@@ -142,8 +153,8 @@ def page_to_features(xseq):
     # (as if they are a single feature, not many features)
     k = 0.2
     for feat, (before, after) in zip(features, around):
-        feat['text-before'] = {n: k for n in list(ngrams_wb(normalize(before), 5, 5))}
-        feat['text-after'] = {n: k for n in list(ngrams_wb(normalize(after), 5, 5))}
+        feat['text-before'] = {n: k for n in _as_list(ngrams_wb(normalize(before), 5, 5))}
+        feat['text-after'] = {n: k for n in _as_list(ngrams_wb(normalize(after), 5, 5))}
     return features
 
 
