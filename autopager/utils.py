@@ -58,7 +58,7 @@ def ngrams_wb(text, min_n, max_n, include_tokens=True):
     If ``include_tokens`` is True, tokens themselves are included
     if their lenght is less than ``min_n``.
 
-    >>> ngrams_wb("I am hungry", 3, 4)
+    >>> list(ngrams_wb("I am hungry", 3, 4))
     ['hun', 'ung', 'ngr', 'gry', 'hung', 'ungr', 'ngry', 'I', 'am']
     >>> list(ngrams_wb("I am hungry", 3, 4, include_tokens=False))
     ['hun', 'ung', 'ngr', 'gry', 'hung', 'ungr', 'ngry']
