@@ -9,7 +9,6 @@ branches:
 env:
     - TOXENV=py27
     - TOXENV=py35
-    - TOXENV=py37
     - TOXENV=py38
 
 install:
