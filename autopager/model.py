@@ -65,6 +65,7 @@ def _as_list(generator, limit=None):
     """
     return list(generator if limit is None else islice(generator, 0, limit))
 
+
 def link_to_features(link):
     text = normalize(get_link_text(link))
 
