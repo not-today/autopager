@@ -63,7 +63,8 @@ def ngrams_wb(text, min_n, max_n, include_tokens=True):
     """
     tokens = text.split()
     for t in tokens:
-        yield from ngrams_stripped(t, min_n, max_n)
+        for ngram in ngrams_stripped(t, min_n, max_n):
+            yield ngram
     if include_tokens:
         for t in tokens:
             if len(t) < min_n:
