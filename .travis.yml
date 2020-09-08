@@ -7,8 +7,7 @@ branches:
         - /^\d\.\d+$/
 
 env:
-    - TOXENV=py27
-    - TOXENV=py35
+    - TOXENV=py36
     - TOXENV=py38
 
 install:
