@@ -33,7 +33,7 @@ with installation docs for these packages if installation fails.
 .. _lxml: http://lxml.de/
 .. _python-crfsuite: http://python-crfsuite.readthedocs.org/en/latest/
 
-Autopager works in Python 2.7+ and 3.3+.
+Autopager works in Python 3.6+.
 
 Usage
 =====
