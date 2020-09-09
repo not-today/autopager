@@ -1,6 +1,12 @@
 Changes
 =======
 
+0.3.1 (2020-09-09)
+------------------
+
+* Fixing the distribution;
+* backports.csv is no longer required in setup.py
+
 0.3 (2020-09-09)
 ----------------
 
