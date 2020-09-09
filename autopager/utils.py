@@ -30,14 +30,12 @@ def normalize_whitespaces(text):
 
 def ngrams(seq, min_n, max_n):
     """
-    Return min_n to max_n n-grams of elements from a given sequence.
+    Generate min_n to max_n n-grams of elements from a given sequence.
     """
     text_len = len(seq)
-    res = []
     for n in range(min_n, min(max_n + 1, text_len + 1)):
         for i in range(text_len - n + 1):
-            res.append(seq[i: i + n])
-    return res
+            yield seq[i: i + n]
 
 
 def normalize(text):
@@ -46,27 +44,31 @@ def normalize(text):
 
 
 def ngrams_stripped(text, min_n, max_n):
-    stripped = [txt.strip() for txt in ngrams(text, min_n, max_n)]
-    return [txt for txt in stripped if txt]
+    for txt in ngrams(text, min_n, max_n):
+        stripped = txt.strip()
+        if stripped:
+            yield stripped
 
 
 def ngrams_wb(text, min_n, max_n, include_tokens=True):
     """
-    Return character ngrams; they don't span across whitespaces.
+    Generate character ngrams; they don't span across whitespaces.
     If ``include_tokens`` is True, tokens themselves are included
     if their lenght is less than ``min_n``.
 
-    >>> ngrams_wb("I am hungry", 3, 4)
+    >>> list(ngrams_wb("I am hungry", 3, 4))
     ['hun', 'ung', 'ngr', 'gry', 'hung', 'ungr', 'ngry', 'I', 'am']
-    >>> ngrams_wb("I am hungry", 3, 4, include_tokens=False)
+    >>> list(ngrams_wb("I am hungry", 3, 4, include_tokens=False))
     ['hun', 'ung', 'ngr', 'gry', 'hung', 'ungr', 'ngry']
     """
     tokens = text.split()
-    res = list(chain.from_iterable(ngrams_stripped(t, min_n, max_n)
-                                   for t in tokens))
+    for t in tokens:
+        for ngram in ngrams_stripped(t, min_n, max_n):
+            yield ngram
     if include_tokens:
-        res.extend(t for t in tokens if len(t) < min_n)
-    return res
+        for t in tokens:
+            if len(t) < min_n:
+                yield t
 
 
 def replace_digits(text, repl='X'):

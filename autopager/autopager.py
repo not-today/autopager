@@ -7,7 +7,7 @@ import six.moves.cPickle as pickle
 
 import parsel
 from autopager.htmlutils import get_links
-from autopager.model import page_to_features, get_crf
+from autopager.model import page_to_features, get_crf, AUTOPAGER_LIMITS
 from autopager.storage import Storage
 
 
@@ -109,6 +109,7 @@ class AutoPager(object):
         """
         sel = _any2selector(page)
         links = get_links(sel)
+        links = links[:AUTOPAGER_LIMITS.max_links]
         xseq = page_to_features(links)
         yseq = self.crf.predict_single(xseq)
         for x, y in zip(links, yseq):

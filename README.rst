@@ -33,7 +33,7 @@ with installation docs for these packages if installation fails.
 .. _lxml: http://lxml.de/
 .. _python-crfsuite: http://python-crfsuite.readthedocs.org/en/latest/
 
-Autopager works in Python 2.7+ and 3.3+.
+Autopager works in Python 3.6+.
 
 Usage
 =====
@@ -146,3 +146,9 @@ HTML file using "Save As.." browser menu option it is better to use
 regardless of page encoding defined in HTTP headers or ``<meta>`` tags.
 
 .. _Splash: https://github.com/scrapinghub/splash
+
+----
+
+.. image:: https://hyperiongray.s3.amazonaws.com/define-hg.svg
+	:target: https://www.hyperiongray.com/?pk_campaign=github&pk_kwd=autopager
+	:alt: define hyperiongray
