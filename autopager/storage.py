@@ -2,8 +2,7 @@
 from __future__ import absolute_import
 import os
 import io
-
-from backports import csv
+import csv
 import parsel
 
 from autopager.htmlutils import get_xseq_yseq
