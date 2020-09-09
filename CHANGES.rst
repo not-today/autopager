@@ -1,6 +1,14 @@
 Changes
 =======
 
+0.3 (2020-09-09)
+----------------
+
+* Minimum Python requirement is now 3.6. Older versions may still work,
+  but they're no longer tested on CI.
+* Memory usage is limited, to avoid spikes on pathological pages.
+* 
+
 0.2 (2016-04-26)
 ----------------
 
